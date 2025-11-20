@@ -550,7 +550,6 @@ class PatientListPage(BasePage):
         ttk.Button(btn_panel, text="Edit", command=self.edit_selected).pack(fill='x', pady=6)
         ttk.Button(btn_panel, text="Upload Image", command=self.upload_selected).pack(fill='x', pady=6)
         ttk.Button(btn_panel, text="Delete", command=self.delete_selected).pack(fill='x', pady=6)
-        ttk.Button(btn_panel, text="View History", command=self.view_history).pack(fill='x', pady=6)
 
         self.refresh()
 
@@ -631,37 +630,6 @@ class PatientListPage(BasePage):
             except Exception as e:
                 messagebox.showerror("Error", f"Could not delete: {e}")
 
-    def view_history(self):
-        pid = self.get_selected_patient_id()
-        if not pid:
-            return
-        try:
-            sql.execute("""
-                CREATE TABLE IF NOT EXISTS diagnosis_history (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    patient_id INT,
-                    diagnosis VARCHAR(255),
-                    diagnosis_class VARCHAR(64),
-                    test_date DATETIME DEFAULT CURRENT_TIMESTAMP
-                )
-            """)
-            connection.commit()
-            sql.execute("SELECT diagnosis, diagnosis_class, test_date FROM diagnosis_history WHERE patient_id = %s ORDER BY test_date DESC", (pid,))
-            rows = sql.fetchall()
-        except Exception as e:
-            messagebox.showerror("Error", f"Could not fetch history: {e}")
-            print("History fetch error:", e)
-            return
-        win = Toplevel(self)
-        win.title("Diagnosis History")
-        win.geometry("700x420")
-        listbox = Listbox(win, font=("Segoe UI", 11))
-        listbox.pack(fill='both', expand=True, padx=8, pady=8)
-        for r in rows:
-            d = r[0] or ""
-            cls = r[1] or ""
-            t = r[2].strftime("%Y-%m-%d %H:%M") if isinstance(r[2], datetime.datetime) else str(r[2])
-            listbox.insert(END, f"{t} — {d} (class {cls})")
 
 # ----------------------------
 # PatientFormPage
