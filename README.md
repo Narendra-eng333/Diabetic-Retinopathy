@@ -33,7 +33,7 @@ I have only shown below the main layers of resnet and each of the 'layer1', 'lay
 
 
 # Getting started :       
-[Click](https://github.com/souravs17031999/Retinal_blindness_detection_Pytorch/blob/master/GettingStarted.md) here to get started locally on your system.
+[Click](https://github.com/Narendra-eng333/Diabetic-Retinopathy/blob/main/GettingStarted.md) here to get started locally on your system.
 
 ## Some snaps :     
 ![images/image_1.png](images/image_1.png)
