@@ -34,54 +34,7 @@ from reportlab.lib.enums import TA_LEFT
 # import your model (expects main)
 import model
 
-# ----------------------------
-# Helper: ensure example images exist (logo + eye icon)
-# ----------------------------
-def ensure_example_images():
-    base = os.path.abspath(os.path.dirname(__file__))
-    logo_path = os.path.join(base, "logo_small.png")
-    eye_path = os.path.join(base, "eye_icon.png")
 
-    def create_logo(path):
-        w,h = 600,180
-        img = Image.new("RGB", (w,h), (240,248,250
-        ))
-        draw = ImageDraw.Draw(img)
-        draw.ellipse((20,20,160,160), fill=(255,235,238), outline=(200,30,45), width=4)
-        draw.ellipse((60,60,120,120), fill=(255,255,255), outline=(200,30,45), width=2)
-        try:
-            font = ImageFont.truetype("arial.ttf", 36)
-        except Exception:
-            font = ImageFont.load_default()
-        draw.text((180,30), "Diabetic Retinopathy", fill=(10,30,80), font=font)
-        draw.text((180,80), "Detection", fill=(10,30,80), font=font)
-        img.save(path)
-
-    def create_eye(path):
-        size = 420
-        icon = Image.new("RGB", (size,size), (244,248,180))
-        d = ImageDraw.Draw(icon)
-        # almond shape
-        d.polygon([(40,size//2),(size//2-20,80),(size-40,size//2),(size//2+20,size-80)], fill=(235,245,250))
-        d.ellipse((size//2-70,size//2-70,size//2+70,size//2+70), fill=(255,235,238), outline=(200,30,45), width=6)
-        d.ellipse((size//2-30,size//2-30,size//2+30,size//2+30), fill=(30,60,90))
-        d.ellipse((size//2+5,size//2-25,size//2+15,size//2-15), fill=(255,255,255))
-        icon.save(path)
-
-    try:
-        if not os.path.exists(logo_path):
-            create_logo(logo_path)
-        if not os.path.exists(eye_path):
-            create_eye(eye_path)
-    except Exception as e:
-        print("Could not create example images:", e)
-    return logo_path, eye_path
-
-# create example images if missing
-try:
-    ensure_example_images()
-except Exception:
-    pass
 
 # ----------------------------
 # Database connection
@@ -323,9 +276,9 @@ def generate_report_pdf(patient_row, image_path, diagnosis, diagnosis_class, out
 # ----------------------------
 # UI constants
 # ----------------------------
-APP_TITLE = "Blindness Detection System"
+APP_TITLE = "Diabetic Retinopathy Detection"
 BG_COLOR = "#eef6f6"
-ACCENT = "#0288d1"
+ACCENT = "#074E96"
 CARD_BG = "white"
 FONT_HEAD = ("Segoe UI", 26, "bold")
 FONT_LABEL = ("Segoe UI", 18)
@@ -355,7 +308,7 @@ class App(tk := Tk):
         style.configure('TLabel', background=BG_COLOR, font=FONT_LABEL)
         style.configure('Header.TLabel', font=FONT_HEAD, background=BG_COLOR)
         style.configure('Accent.TButton', background=ACCENT, foreground='white')
-        style.map('Accent.TButton', background=[('active', '#0277bd')])
+        style.map('Accent.TButton', background=[('active', "#045f93")])
         style.configure('TButton', font=FONT_INPUT, padding=6)
 
         container = ttk.Frame(self)
@@ -403,7 +356,7 @@ class BasePage(ttk.Frame):
 class LoginPage(BasePage):
     def __init__(self, parent, controller):
         super().__init__(parent, controller)
-        header = ttk.Label(self, text="Retinal Blindness Detection", style='Header.TLabel')
+        header = ttk.Label(self, text="Diabetic Retinopathy Detection", style='Header.TLabel')
         header.pack(pady=(12,6))
 
         main_card = self.card(self)
